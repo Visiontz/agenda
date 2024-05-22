@@ -1,35 +1,34 @@
 <?php
 
-require_once("config.php");
+require_once 'config.php';
 
-if(isset($_POST['register'])){
-
+if (isset($_POST['register'])) {
     // filter data yang diinputkan
     $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
     $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_STRING);
     // enkripsi password
-    $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
-
-
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
     // menyiapkan query
-    $sql = "INSERT INTO users (name, username, password) 
-            VALUES (:name, :username, :password)";
+    $sql = 'INSERT INTO users (name, username, password) 
+            VALUES (:name, :username, :password)';
     $stmt = $db->prepare($sql);
 
     // bind parameter ke query
-    $params = array(
-        ":name" => $name,
-        ":username" => $username,
-        ":password" => $password,
-    );
+    $params = [
+        ':name' => $name,
+        ':username' => $username,
+        ':password' => $password,
+    ];
 
     // eksekusi query untuk menyimpan ke database
     $saved = $stmt->execute($params);
 
     // jika query simpan berhasil, maka user sudah terdaftar
     // maka alihkan ke halaman login
-    if($saved) header("Location: login.php");
+    if ($saved) {
+        header('Location: login.php');
+    }
 }
 
 ?>
@@ -42,53 +41,54 @@ if(isset($_POST['register'])){
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Register Pesbuk</title>
 
-    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <!-- Menyisipkan Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body class="bg-light">
 
 <div class="container mt-5">
-    <div class="row">
+    <div class="row justify-content-center">
         <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <p>&larr; <a href="index.php">Home</a></p>
+                    <h4 class="card-title">Bergabunglah bersama ribuan orang lainnya...</h4>
+                    <p>Sudah punya akun? <a href="login.php">Login di sini</a></p>
 
-        <p>&larr; <a href="index.php">Home</a>
+                    <form action="" method="POST">
+                        <div class="form-group">
+                            <label for="name">Nama Lengkap</label>
+                            <input class="form-control" type="text" name="name" id="name" placeholder="Nama kamu" required>
+                        </div>
 
-        <h4>Bergabunglah bersama ribuan orang lainnya...</h4>
-        <p>Sudah punya akun? <a href="login.php">Login di sini</a></p>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input class="form-control" type="text" name="username" id="username" placeholder="Username" required>
+                        </div>
 
-        <form action="" method="POST">
+                        <!-- Uncomment this section if email input is needed
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input class="form-control" type="email" name="email" id="email" placeholder="Alamat Email" required>
+                        </div>
+                        -->
 
-            <div class="form-group">
-                <label for="name">Nama Lengkap</label>
-                <input class="form-control" type="text" name="name" placeholder="Nama kamu" />
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input class="form-control" type="password" name="password" id="password" placeholder="Password" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-success btn-block" name="register">Daftar</button>
+                    </form>
+                </div>
             </div>
-
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input class="form-control" type="text" name="username" placeholder="Username" />
-            </div>
-
-            <!-- <div class="form-group">
-                <label for="email">Email</label>
-                <input class="form-control" type="email" name="email" placeholder="Alamat Email" />
-            </div> -->
-
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input class="form-control" type="password" name="password" placeholder="Password" />
-            </div>
-
-            <input type="submit" class="btn btn-success btn-block" name="register" value="Daftar" />
-
-        </form>
-            
         </div>
-
-        <!-- <div class="col-md-6">
-            <img class="img img-responsive" src="img/connect.png" />
-        </div> -->
-
     </div>
 </div>
 
+<!-- Bootstrap JS, Popper.js, and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

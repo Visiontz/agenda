@@ -1,5 +1,7 @@
 <?php
 
 session_start();
-session_unset("user");
-header("Location: index.php");
+unset($_SESSION['user']);
+session_destroy();
+header('Location: tabel.php');
+exit;
